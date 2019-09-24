@@ -1,3 +1,4 @@
+
 //
 //  BaseModel.swift
 //  OneDay
@@ -9,5 +10,14 @@
 import UIKit
 
 class BaseModel: NSObject {
-
+    var name: String
+    var content: String
+    var isSelected: Bool
+    
+    init(name: String, content: String, isSelected: Bool) {
+        self.name = name
+        self.content = content
+        self.isSelected = isSelected
+    }
 }
+

@@ -8,14 +8,50 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    
+    var baseTableView = UITableView()
+    let identifier = "baseTableViewCellIndentifier"
+    var baseModelArray : [BaseModel] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "BaseViewController"
         self.view.backgroundColor = UIColor.white
-        // Do any additional setup after loading the view.
+        self.baseModelArray = [BaseModel.init(name: "A", content: "aaaaa", isSelected: true),
+                               BaseModel.init(name: "B", content: "bbbbb", isSelected: false),
+                               BaseModel.init(name: "C", content: "ccccc", isSelected: false),
+                               BaseModel.init(name: "D", content: "ddddd", isSelected: true)]
+        self.creatCurrentTableView()
     }
+    
+    func creatCurrentTableView() -> Void {
+        self.baseTableView = UITableView.init(frame: self.view.bounds, style: UITableView.Style.plain)
+        self.baseTableView.delegate = self
+        self.baseTableView.dataSource = self
+        self.baseTableView.tableFooterView = UIView.init()
+        self.baseTableView.register(BaseTableViewCell.classForCoder(), forCellReuseIdentifier: identifier)
+        self.view.addSubview(self.baseTableView)
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.baseModelArray.count
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let a = AViewController()
+        let model: BaseModel = self.baseModelArray[indexPath.row]
+        a.model = model
+        self.navigationController?.pushViewController(a, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: BaseTableViewCell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! BaseTableViewCell
+        cell.updateCurrentCell(model: baseModelArray[indexPath.row])
+        return cell
+    }
+    
 
 
 }
