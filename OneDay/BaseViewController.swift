@@ -40,15 +40,25 @@ class BaseViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         return 60
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let a = AViewController()
         let model: BaseModel = self.baseModelArray[indexPath.row]
+        
+        let a = AViewController()
         a.model = model
+        a.blockPreperty = {(content) in
+            print(content)
+        }
         self.navigationController?.pushViewController(a, animated: true)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: BaseTableViewCell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! BaseTableViewCell
-        cell.updateCurrentCell(model: baseModelArray[indexPath.row])
+        
+        let baseModel:BaseModel = baseModelArray[indexPath.row]
+        cell.updateCurrentCell(model: baseModel)
+        cell.functionBlock = {(isSelected) in
+            baseModel.isSelected = isSelected
+            tableView.reloadData()
+        }
         return cell
     }
     

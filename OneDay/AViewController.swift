@@ -1,7 +1,3 @@
-
-
-
-
 //
 //  AViewController.swift
 //  OneDay
@@ -17,6 +13,12 @@ class AViewController: UIViewController {
     var selectedButton = UIButton()
     var contentLabel = UILabel()
     
+//    block
+    typealias disBlock = (_ content: String) ->(Void)
+    var blockPreperty: disBlock!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = model.name
@@ -24,6 +26,13 @@ class AViewController: UIViewController {
         self.setCurrentUI()
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        blockPreperty(model.content)
+    }
+  
+    
     @objc func selectedButtonAction() -> Void {
         selectedButton.isSelected = !selectedButton.isSelected
     }
