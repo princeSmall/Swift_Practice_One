@@ -36,8 +36,8 @@ class BaseTableViewCell: UITableViewCell {
         
     }
     @objc func selectedButtonAction() -> Void {
-        selectedButton.isSelected = !selectedButton.isSelected
-        functionBlock(selectedButton.isSelected)
+        self.selectedButton.isSelected = !self.selectedButton.isSelected
+        self.functionBlock(selectedButton.isSelected)
     }
     
     

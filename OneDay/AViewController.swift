@@ -8,16 +8,13 @@
 
 import UIKit
 
-class AViewController: UIViewController {
+class AViewController: UIViewController ,UITextFieldDelegate{
     var model = BaseModel(name: "", content: "", isSelected: false)
     var selectedButton = UIButton()
-    var contentLabel = UILabel()
-    
+    var contentTextField = UITextField()
 //    block
     typealias disBlock = (_ content: String) ->(Void)
     var blockPreperty: disBlock!
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,26 +26,35 @@ class AViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        blockPreperty(model.content)
+        blockPreperty(contentTextField.text!)
     }
   
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        contentTextField.resignFirstResponder()
+        return true
+    }
     
     @objc func selectedButtonAction() -> Void {
-        selectedButton.isSelected = !selectedButton.isSelected
+        self.selectedButton.isSelected = !self.selectedButton.isSelected
     }
     
     func setCurrentUI() -> Void {
         selectedButton = UIButton.init(frame: CGRect(x: UIScreen.main.bounds.size.width / 2.0 - 50, y: 100, width: 100, height: 50))
-        contentLabel = UILabel.init(frame: CGRect(x: UIScreen.main.bounds.size.width / 2.0 - 50, y: 160, width: 100, height: 40))
-        contentLabel.text = model.content
-        contentLabel.textAlignment = NSTextAlignment.center
+        contentTextField = UITextField.init(frame: CGRect(x: UIScreen.main.bounds.size.width / 2.0 - 100, y: 160, width: 200, height: 40))
+        let leftLabel = UILabel.init(frame: CGRect(x: 0, y: 0, width: 90, height: 40))
+        leftLabel.text = "我可修改："
+        contentTextField.leftView = leftLabel
+        contentTextField.text = model.content
+        contentTextField.leftViewMode = UITextField.ViewMode.always
+        contentTextField.delegate = self
+        contentTextField.textAlignment = NSTextAlignment.left
         selectedButton.isSelected = model.isSelected;
         selectedButton.setTitle("否", for: UIControl.State.normal)
         selectedButton.setTitle("是", for: UIControl.State.selected)
         selectedButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
         selectedButton.addTarget(self, action: #selector(selectedButtonAction), for: UIControl.Event.touchUpInside)
         self.view.addSubview(selectedButton)
-        self.view.addSubview(contentLabel)
+        self.view.addSubview(contentTextField)
     }
     
    

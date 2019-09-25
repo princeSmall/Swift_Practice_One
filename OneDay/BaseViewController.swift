@@ -45,7 +45,8 @@ class BaseViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         let a = AViewController()
         a.model = model
         a.blockPreperty = {(content) in
-            print(content)
+            model.content = content
+            tableView.reloadData()
         }
         self.navigationController?.pushViewController(a, animated: true)
     }
